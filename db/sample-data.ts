@@ -1,4 +1,21 @@
+import { hashSync } from "bcrypt-ts-edge";
+
 const ikeaProducts = {
+  users: [
+    {
+      name: "John",
+      email: "admin@example.com",
+      password: hashSync("123456", 10),
+      role: "admin",
+    },
+    {
+      name: "Jane",
+      email: "user@example.com",
+      password: hashSync("123456", 10),
+      role: "user",
+    },
+  ],
+
   products: [
     {
       item_id: "19011777",
