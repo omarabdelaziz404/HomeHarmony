@@ -5,7 +5,7 @@ import { signIn, signOut } from "@/auth";
 //import { redirect } from "next/navigation";
 import { hashSync } from "bcrypt-ts-edge";
 import { prisma } from "@/db/prisma";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
+import isRedirectError from "@/lib/actions/isRedirectError";
 import { formatError } from "../utils";
 
 // Sign in the user with credentials
