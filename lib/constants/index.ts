@@ -7,3 +7,15 @@ process.env.NEXT_PUBLIC_APP_DESCRIPTION || "**Home Harmony** is an innovative pl
 export const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
 
 export const LATEST_PROFUCTS_LIMIT = Number(process.env.LATEST_PROFUCTS_LIMIT) || 9;
+
+export const signInDefaultValues = {
+    email:'',
+    password:'',
+};
+
+export const signUpDefaultValues = {
+    name:'',
+    email:'',
+    password:'',
+    confirmPassword: '',
+};
