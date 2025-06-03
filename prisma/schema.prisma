@@ -135,7 +135,7 @@ model OrderItem {
   slug      String
   image     String
 
-  order   Order   @relation(fields: [orderId], references: [id])
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade) //edited
   product Product @relation(fields: [productId], references: [item_id],  onDelete: Cascade) //edited
 
   @@id([orderId, productId], map: "orderitems_orderId_productId_pk")
