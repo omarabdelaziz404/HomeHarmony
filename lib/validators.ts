@@ -35,9 +35,15 @@ export const insertProductSchema = z.object({
 
   height: z.number(),
 
-  width: z.number(),
+ width: z.number(),
 
   depth: z.number(),
+   //Required by Prisma but missing before:
+   item_id: z.string().uuid(),  // Or auto-generate later
+   old_price: z.string(),                 // Consider defaulting this
+   sellable_online: z.boolean(),
+   link: z.string().url(),
+   other_colors: z.string(),
 });
 
 // Schema for signing users in
@@ -158,4 +164,8 @@ export const insertReviewSchema = z.object({
     .max(5, 'Rating must be at most 5'),
 });
 
+// Schema for updating products
+export const updateProductSchema = insertProductSchema.extend({
+  item_id: z.string().min(1, 'Id is required'),
+});
 
