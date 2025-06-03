@@ -27,23 +27,23 @@ export const insertProductSchema = z.object({
 
   isFeatured: z.boolean(),
 
-  banner: z.string().nullable(),
+  banner: z.string().nullable().optional(),
 
   price: currency,
 
-  designer: z.string().min(3, "Designer must be atleast 3 characters"),
+  designer: z.string().min(3, "Designer must be atleast 3 characters").optional(),
 
-  height: z.number(),
+  height: z.number().optional(),
 
- width: z.number(),
+  width: z.number().optional(),
 
-  depth: z.number(),
+  depth: z.number().optional(),
    //Required by Prisma but missing before:
-   item_id: z.string().uuid(),  // Or auto-generate later
-   old_price: z.string(),                 // Consider defaulting this
-   sellable_online: z.boolean(),
-   link: z.string().url(),
-   other_colors: z.string(),
+   item_id: z.string(),  // Or auto-generate later
+   old_price: z.string().nullable().optional(),                 // Consider defaulting this
+   sellable_online: z.boolean().optional(),
+   link: z.string().url().optional(),
+   other_colors: z.string().optional(),
 });
 
 // Schema for signing users in

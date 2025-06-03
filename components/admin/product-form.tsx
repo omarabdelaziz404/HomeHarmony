@@ -225,6 +225,30 @@ const ProductForm = ({
               </FormItem>
             )}
           />
+          </div>
+<div className='flex flex-col md:flex-row gap-5'>
+  {/* Item ID */}
+  <FormField
+    control={form.control}
+    name='item_id'
+    render={({
+      field,
+    }: {
+      field: ControllerRenderProps<
+        z.infer<typeof insertProductSchema>,
+        'item_id'
+      >;
+    }) => (
+      <FormItem className='w-full'>
+        <FormLabel>Item ID</FormLabel>
+        <FormControl>
+          <Input placeholder='Enter product item ID' {...field} />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    )}
+  />
+
           {/* Stock */}
           <FormField
             control={form.control}

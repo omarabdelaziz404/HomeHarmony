@@ -124,6 +124,7 @@ export async function createProduct(data: z.infer<typeof insertProductSchema>) {
 
     return { success: true, message: "Product created successfully" };
   } catch (error) {
+    console.error("Create product error:", error);
     return { success: false, message: formatError(error) };
   }
 }

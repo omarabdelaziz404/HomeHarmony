@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Product {
-  item_id         String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  item_id         String  @id 
   name            String
   slug            String   @unique(map: "product_slug_idx")
   category        String
@@ -23,14 +23,14 @@ model Product {
   isFeatured      Boolean  @default(false)
   banner          String?
   CreatedAt       DateTime @default(now()) @db.Timestamp(6)
-  old_price       String
-  sellable_online Boolean
-  link            String
-  other_colors    String
-  designer        String
-  depth           Int
-  height          Int
-  width           Int
+  old_price       String?
+  sellable_online Boolean?
+  link            String?
+  other_colors    String?
+  designer        String?
+  depth           Int?
+  height          Int?
+  width           Int?
 
   OrderItem OrderItem[]
   
@@ -128,7 +128,7 @@ model Order {
 
 model OrderItem {
   orderId   String  @db.Uuid
-  productId String  @db.Uuid
+  productId String  
   qty       Int
   price     Decimal @db.Decimal(12, 2)
   name      String
