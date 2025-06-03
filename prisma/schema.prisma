@@ -23,7 +23,7 @@ model Product {
   isFeatured      Boolean  @default(false)
   banner          String?
   CreatedAt       DateTime @default(now()) @db.Timestamp(6)
-  old_price       String?
+ 
   sellable_online Boolean?
   link            String?
   other_colors    String?

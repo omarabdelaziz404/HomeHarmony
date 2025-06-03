@@ -40,10 +40,10 @@ export const insertProductSchema = z.object({
   depth: z.number().optional(),
    //Required by Prisma but missing before:
    item_id: z.string(),  // Or auto-generate later
-   old_price: z.string().nullable().optional(),                 // Consider defaulting this
-   sellable_online: z.boolean().optional(),
-   link: z.string().url().optional(),
-   other_colors: z.string().optional(),
+   //old_price: z.string().nullable().optional(),                 // Consider defaulting this
+   //sellable_online: z.boolean().optional(),
+   //link: z.string().url().optional(),
+   //other_colors: z.string().optional(),
 });
 
 // Schema for signing users in
