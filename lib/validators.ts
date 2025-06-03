@@ -31,13 +31,13 @@ export const insertProductSchema = z.object({
 
   price: currency,
 
-  designer: z.string().min(3, "Designer must be atleast 3 characters").optional(),
+  //designer: z.string().min(3, "Designer must be atleast 3 characters").optional(),
 
-  height: z.number().optional(),
+  //height: z.number().optional(),
 
-  width: z.number().optional(),
+  //width: z.number().optional(),
 
-  depth: z.number().optional(),
+  //depth: z.number().optional(),
    //Required by Prisma but missing before:
    item_id: z.string(),  // Or auto-generate later
    //old_price: z.string().nullable().optional(),                 // Consider defaulting this

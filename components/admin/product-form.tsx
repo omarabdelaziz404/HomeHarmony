@@ -272,6 +272,7 @@ const ProductForm = ({
           />
         </div>
         <div className='upload-field flex flex-col md:flex-row gap-5'>
+        
           {/* Images */}
           <FormField
             control={form.control}

@@ -24,13 +24,13 @@ model Product {
   banner          String?
   CreatedAt       DateTime @default(now()) @db.Timestamp(6)
  
-  sellable_online Boolean?
-  link            String?
-  other_colors    String?
-  designer        String?
-  depth           Int?
-  height          Int?
-  width           Int?
+  //sellable_online Boolean?
+  //link            String?
+  //other_colors    String?
+  //designer        String?
+  //depth           Int?
+  //height          Int?
+  //width           Int?
 
   OrderItem OrderItem[]
   
