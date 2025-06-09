@@ -32,7 +32,7 @@ const ProductForm = ({
   product,
   productId,
 }: {
-  type: "Create" | "Update" | "Home";
+  type: "Create" | "Update" | "Home" | "Designer";
   product?: Product;
   productId?: string;
 }) => {
@@ -46,15 +46,29 @@ const ProductForm = ({
     if (type === "Home") {
       return {
         ...productDefaultValues,
-        name: `${session?.user?.name || "User"}'s Home`,
+        name: `${session?.user?.name || "Users"}'s Home`,
         category: "Design Your Home",
         stock: 1,
         price: "0", // Or set a base price for home design
         description: "Custom home design project",
       };
     }
-
+    if (type === "Designer") {
+    return {
+      ...productDefaultValues,
+      name: `${session?.user?.name || "Designer"}'s Portfolio`,
+      category: "Designer Portfolio",
+      stock: 1,
+      price: "0",
+      brand: session?.user?.name || "Designer",
+      description: `Interior design portfolio by ${session?.user?.name || "Designer"}`,
+      isFeatured: true, // Makes the designer's portfolio featured by default
+    };
+  }
+  
     return productDefaultValues;
+
+
   };
 
   const form = useForm<z.infer<typeof insertProductSchema>>({
@@ -66,27 +80,33 @@ const ProductForm = ({
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (
-    values
-  ) => {
-    // On Create
-    console.log("hi");
-    if (type === "Create" || type === "Home") {
-      const res = await createProduct(values);
-      console.log("create home ");
-      if (!res.success) {
-        console.log("failed ");
-
-        toast({
-          variant: "destructive",
-          description: res.message,
-        });
+  values
+) => {
+  // On Create
+  if (type === "Create" || type === "Home" || type === "Designer") {
+    const res = await createProduct(values);
+    console.log(`create ${type.toLowerCase()}`);
+    
+    if (!res.success) {
+      console.log("failed");
+      toast({
+        variant: "destructive",
+        description: res.message,
+      });
+    } else {
+      toast({
+        description: res.message,
+      });
+      // Route based on type
+      if (type === "Home") {
+        router.push("/");
+      } else if (type === "Designer") {
+        router.push("/");
       } else {
-        toast({
-          description: res.message,
-        });
-        router.push(type === "Home" ? "/" : "/admin/products");
+        router.push("/admin/products");
       }
     }
+  }
 
     // On Update
     if (type === "Update") {
@@ -173,28 +193,34 @@ const ProductForm = ({
          
         {/* Category & Brand */}
         <div className="flex flex-col md:flex-row gap-5">
-          <FormField
-            control={form.control}
-            name="category"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>
-                  {type === "Home" ? "Project Type" : "Category"}
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter category"
-                    {...field}
-                    value={type === "Home" ? "Design Your Home" : field.value}
-                    readOnly={type === "Home"}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+        <FormField
+    control={form.control}
+    name="category"
+    render={({ field }) => (
+      <FormItem className="w-full">
+        <FormLabel>
+          {type === "Home" ? "Category" : 
+           type === "Designer" ? "Category" : 
+           "Category"}
+        </FormLabel>
+        <FormControl>
+          <Input
+            placeholder="Enter category"
+            {...field}
+            value={
+              type === "Home" ? "Home Ads" : 
+              type === "Designer" ? "Designer Portfolio" : 
+              field.value
+            }
+            readOnly={type === "Home" || type === "Designer"}
           />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    )}
+  />
 
-          {type !== "Home" && (
+          {type !== "Home" && type !== "Designer" && (
             <FormField
               control={form.control}
               name="brand"
@@ -219,7 +245,8 @@ const ProductForm = ({
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>
-                  {type === "Home" ? "Base Price" : "Price"}
+                  {type === "Home" ? "Price" : ""}
+                  {type === "Designer" ? "Budget" : ""}
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -235,7 +262,7 @@ const ProductForm = ({
         </div>
 
         {/* Stock */}
-        {type !== "Home" && (
+        {type !== "Home" && type !== "Designer" && (
           <FormField
             control={form.control}
             name="stock"
@@ -300,7 +327,7 @@ const ProductForm = ({
         </div>
 
         {/* Featured Product & Banner */}
-        {type !== "Home" && (
+        {type !== "Home" && type !== "Designer" && (
           <div className="upload-field">
             <Card>
               <CardContent className="space-y-2 mt-2">
@@ -356,7 +383,11 @@ const ProductForm = ({
               <FormLabel>
                 {type === "Home"
                   ? "Project Description"
-                  : "Product Description"}
+                  : ""}
+                  {type === "Create"
+                  ? "Product Description"
+                  : ""}
+                  {type === "Designer" ? "Design Description" : ""}
               </FormLabel>
               <FormControl>
                 <Textarea

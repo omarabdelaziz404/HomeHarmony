@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "UserRole" AS ENUM ('user', 'admin', 'designer');
+
 -- CreateTable
 CREATE TABLE "Product" (
     "item_id" UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -5,13 +8,13 @@ CREATE TABLE "Product" (
     "slug" TEXT NOT NULL,
     "category" TEXT NOT NULL,
     "images" TEXT[],
-    "brand" TEXT NOT NULL,
+    "brand" TEXT,
     "description" TEXT NOT NULL,
-    "stock" INTEGER NOT NULL,
+    "stock" INTEGER,
     "price" DECIMAL(12,2) NOT NULL DEFAULT 0,
     "rating" DECIMAL(3,2) NOT NULL DEFAULT 0,
     "numReviews" INTEGER NOT NULL DEFAULT 0,
-    "isFeatured" BOOLEAN NOT NULL DEFAULT false,
+    "isFeatured" BOOLEAN DEFAULT false,
     "banner" TEXT,
     "CreatedAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -26,7 +29,7 @@ CREATE TABLE "User" (
     "emailVerified" TIMESTAMP(6),
     "image" TEXT,
     "password" TEXT,
-    "role" TEXT NOT NULL DEFAULT 'user',
+    "role" "UserRole" NOT NULL DEFAULT 'user',
     "address" JSON,
     "paymentMethod" TEXT,
     "CreatedAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,

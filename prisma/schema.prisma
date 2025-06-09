@@ -27,6 +27,12 @@ model Product {
   Review      Review[]
 }
 
+enum UserRole {
+  user
+  admin
+  designer
+}
+
 model User {
   id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name          String    @default("NO_NAME")
@@ -34,7 +40,7 @@ model User {
   emailVerified DateTime? @db.Timestamp(6)
   image         String?
   password      String?
-  role          String    @default("user")
+  role          UserRole  @default(user)
   address       Json?     @db.Json
   paymentMethod String?
   CreatedAt     DateTime  @default(now()) @db.Timestamp(6)

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Customer Profile',
 };
 
-const Profile =    () => {
+const Profile =    async () => {
   const session = await auth();
 
   return (

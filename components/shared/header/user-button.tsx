@@ -63,11 +63,20 @@ const UserButton = async () => {
               </Link>
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem>
-            <Link href="/user/orders" className="w-full">
-              Order History
-            </Link>
-          </DropdownMenuItem>
+          {session?.user?.role === "designer" && (
+            <DropdownMenuItem>
+              <Link href="/user/designer" className="w-full">
+                Designs
+              </Link>
+            </DropdownMenuItem>
+          )}
+          {session?.user?.role === "user" || session?.user?.role === "admin" && (
+            <DropdownMenuItem>
+              <Link href="/user/orders" className="w-full">
+                Order History
+              </Link>
+            </DropdownMenuItem>
+          )}
 
           {session?.user?.role === "admin" && (
             <DropdownMenuItem>
