@@ -19,7 +19,7 @@ export type Product = z.infer<typeof insertProductSchema> & {
 };
 
 export type Cart = z.infer<typeof insertCartSchema>;
-export type CartItem = z.infer<typeof cartItemSchema>;
+export type CartItem = z.infer<typeof cartItemSchema> & { category: string };
 export type ShippingAddress = z.infer<typeof shippingAddressSchema>;
 export type OrderItem = z.infer<typeof insertOrderItemSchema>;
 export type Order = z.infer<typeof insertOrderSchema> & {
@@ -34,6 +34,7 @@ export type Order = z.infer<typeof insertOrderSchema> & {
   paymentResult: PaymentResult;
   Home: string;
   designer: string;
+  seller: string;
 };
 export type PaymentResult = z.infer<typeof paymentResultSchema>;
 

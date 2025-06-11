@@ -32,7 +32,7 @@ const ProductForm = ({
   product,
   productId,
 }: {
-  type: "Create" | "Update" | "Home" | "Designer";
+  type: "Create" | "Update" | "Home" | "Designer"| "Seller";
   product?: Product;
   productId?: string;
 }) => {
@@ -46,7 +46,7 @@ const ProductForm = ({
     if (type === "Home") {
       return {
         ...productDefaultValues,
-        name: `${session?.user?.name || "Users"}'s Home`,
+        name: `${""}`,
         category: "Design Your Home",
         stock: 1,
         price: "0", // Or set a base price for home design
@@ -62,14 +62,24 @@ const ProductForm = ({
       price: "0",
       brand: session?.user?.name || "Designer",
       description: `Interior design portfolio by ${session?.user?.name || "Designer"}`,
-      isFeatured: true, // Makes the designer's portfolio featured by default
+      isFeatured: false, // Makes the designer's portfolio featured by default
     };
   }
-  
-    return productDefaultValues;
+  if (type === "Seller") {
+    return {
+      ...productDefaultValues,
+      name: `${ ""}`,
+      category: "",
+      stock: 1,
+      price: "0",
+      brand:  "",
+      description: `${""}`,
+      isFeatured: false, // Makes the seller's merchandise featured by default
+    };
+  }
 
-
-  };
+  return productDefaultValues;
+};
 
   const form = useForm<z.infer<typeof insertProductSchema>>({
     resolver:
@@ -83,7 +93,7 @@ const ProductForm = ({
   values
 ) => {
   // On Create
-  if (type === "Create" || type === "Home" || type === "Designer") {
+  if (type === "Create" || type === "Home" || type === "Designer" || type === "Seller") {
     const res = await createProduct(values);
     console.log(`create ${type.toLowerCase()}`);
     
@@ -99,8 +109,10 @@ const ProductForm = ({
       });
       // Route based on type
       if (type === "Home") {
-        router.push("/");
+        router.push("/search?category=Design%20Your%20Home");
       } else if (type === "Designer") {
+        router.push("/search?category=Designer%20Portfolio");
+      } else if (type === "Seller") {
         router.push("/");
       } else {
         router.push("/admin/products");
@@ -108,7 +120,7 @@ const ProductForm = ({
     }
   }
 
-    // On Update
+    // On Update 
     if (type === "Update") {
       console.log("udpate");
 
@@ -154,7 +166,8 @@ const ProductForm = ({
                 <FormItem className="w-full">
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter product name" {...field} />
+                    <Input placeholder= {type === "Home" ? "Enter home name" :type === "Designer" ?  "Enter design name" : "Enter product name" }
+                     {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -208,7 +221,7 @@ const ProductForm = ({
             placeholder="Enter category"
             {...field}
             value={
-              type === "Home" ? "Home Ads" : 
+              type === "Home" ? "Design Your Home" : 
               type === "Designer" ? "Designer Portfolio" : 
               field.value
             }
@@ -245,8 +258,11 @@ const ProductForm = ({
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>
-                  {type === "Home" ? "Price" : ""}
+                  {type === "Home" ? "Budget" : ""}
                   {type === "Designer" ? "Budget" : ""}
+                  {type === "Update" ? "Price" : ""}
+                  {type === "Seller" ? "Price" : ""}
+                  {type === "Create" ? "Price" : ""}
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -327,7 +343,7 @@ const ProductForm = ({
         </div>
 
         {/* Featured Product & Banner */}
-        {type !== "Home" && type !== "Designer" && (
+        {type !== "Home" && type !== "Designer" && type !== "Seller" && (
           <div className="upload-field">
             <Card>
               <CardContent className="space-y-2 mt-2">

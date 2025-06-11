@@ -9,7 +9,7 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { formatError } from "../utils";
 import { ShippingAddress } from '@/types';
 import { z } from 'zod';
-import { Prisma } from "@prisma/client";
+import { Prisma, UserRole } from "@prisma/client";
 import { PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
 
@@ -230,7 +230,7 @@ export async function updateUser(user: z.infer<typeof updateUserSchema>) {
       where: { id: user.id },
       data: {
         name: user.name,
-        role: user.role,
+        role: user.role as UserRole,
       },
     });
 

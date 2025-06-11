@@ -54,4 +54,4 @@ export const DEFAULT_PAYMENT_METHOD =
   };
 export const USER_ROLES = process.env.USER_ROLES
   ? process.env.USER_ROLES.split(', ')
-  : ['admin', 'user', 'designer'];
+  : ['admin', 'user', 'designer', 'seller'];

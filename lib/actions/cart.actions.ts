@@ -90,8 +90,8 @@ export async function addItemToCart(data: CartItem) {
         // Check stock
         if (product.stock < 1) throw new Error('Not enough stock');
 
-        // Add item to the cart.items
-        cart.items.push(item);
+        // Add item to the cart.items with category from product
+        cart.items.push({ ...item, category: product.category });
       }
 
       // Save to database

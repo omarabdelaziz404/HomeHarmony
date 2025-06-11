@@ -1,28 +1,28 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Check, Loader } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useFormStatus } from 'react-dom';
 import { createOrder } from '@/lib/actions/order.actions';
 
-const PlaceOrderForm = () => {
+export default function PlaceOrderForm() {
   const router = useRouter();
+  const [pending, setPending] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
+    setPending(true);
     const res = await createOrder();
-
+    setPending(false);
     if (res.redirectTo) {
       router.push(res.redirectTo);
     }
   };
 
-  const PlaceOrderButton = () => {
-    const { pending } = useFormStatus();
-    return (
-      <Button disabled={pending} className='w-full'>
+  return (
+    <form onSubmit={handleSubmit} className='w-full'>
+      <Button type="submit" disabled={pending} className='w-full'>
         {pending ? (
           <Loader className='w-4 h-4 animate-spin' />
         ) : (
@@ -30,14 +30,6 @@ const PlaceOrderForm = () => {
         )}{' '}
         Place Order
       </Button>
-    );
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className='w-full'>
-      <PlaceOrderButton />
     </form>
   );
-};
-
-export default PlaceOrderForm;
+}

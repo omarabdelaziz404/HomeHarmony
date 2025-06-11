@@ -25,9 +25,10 @@ import {
   createPayPalOrder,
   approvePayPalOrder,
   updateOrderToPaidCOD,
-  deliverOrder,
+  markOrderPaidAndDelivered
 } from '@/lib/actions/order.actions';
 import StripePayment from './stripe-payment';
+
 
 const OrderDetailsTable = ({
   order,
@@ -126,7 +127,7 @@ const OrderDetailsTable = ({
         disabled={isPending}
         onClick={() =>
           startTransition(async () => {
-            const res = await deliverOrder(order.item_id);
+            const res = await markOrderPaidAndDelivered(order.item_id);
             toast({
               variant: res.success ? 'default' : 'destructive',
               description: res.message,

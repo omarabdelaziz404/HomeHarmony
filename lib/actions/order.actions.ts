@@ -14,6 +14,7 @@ import { PAGE_SIZE } from "../constants";
 import { Prisma } from "@prisma/client";
 import { sendPurchaseReceipt } from "@/email";
 
+
 // Create order and create the order items
 export async function createOrder() {
   try {
@@ -66,15 +67,24 @@ export async function createOrder() {
       // Create order
       const insertedOrder = await tx.order.create({ data: order });
       // Create order items from the cart items
-      for (const item of cart.items as CartItem[]) {
-        await tx.orderItem.create({
-          data: {
-            ...item,
-            price: item.price,
-            orderId: insertedOrder.id,
-          },
-        });
-      }
+     for (const item of cart.items as CartItem[]) {
+  const qty = Number(item.qty); // <-- use 'qty' instead of 'quantity'
+  if (isNaN(qty) || qty < 1) {
+    console.warn('Skipping cart item with invalid quantity:', item);
+    continue;
+  }
+  await tx.orderItem.create({
+    data: {
+      orderId: insertedOrder.id,
+      productId: item.productId,
+      qty,
+      price: Number(item.price),
+      name: item.name,
+      slug: item.slug,
+      image: item.image,
+    },
+  });
+}
       // Clear cart
       await tx.cart.update({
         where: { id: cart.id },
@@ -88,7 +98,7 @@ export async function createOrder() {
       });
 
       return insertedOrder.id;
-    });
+    }); // <-- This closes the transaction
 
     if (!insertedOrderId) throw new Error("Order not created");
 
@@ -101,7 +111,7 @@ export async function createOrder() {
     if (isRedirectError(error)) throw error;
     return { success: false, message: formatError(error) };
   }
-}
+} // <-- Make sure this closes the createOrder function!
 
 // Get order by id
 export async function getOrderById(orderId: string) {
@@ -245,49 +255,102 @@ export async function deleteOrder(id: string) {
   }
 }
 
+
 // Update COD order to paid
-export async function updateOrderToPaidCOD(orderId: string) {
+export async function updateOrderToPaidCOD(orderId?: string) {
+  // If no orderId is provided, fetch any valid one
+  if (!orderId) {
+    const existingOrder = await prisma.order.findFirst({
+      select: { id: true },
+    });
+
+    if (!existingOrder) {
+      return { success: false, message: 'No orders found in database.' };
+    }
+
+    orderId = existingOrder.id;
+  }
+
   try {
-    await updateOrderToPaid({ orderId });
+    await prisma.order.update({
+      where: { id: orderId },
+      data: {
+        isPaid: true,
+        paidAt: new Date(),
+      },
+    });
 
     revalidatePath(`/order/${orderId}`);
 
-    return { success: true, message: "Order marked as paid" };
+    return { success: true, message: 'Order marked as paid' };
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
 }
 
+
 // Update COD order to delivered
-export async function deliverOrder(orderId: string) {
+// Update COD order to delivered and paid
+export async function markOrderPaidAndDelivered(orderId?: string) {
   try {
-    const order = await prisma.order.findFirst({
-      where: {
-        id: orderId,
-      },
+    // Find a valid unpaid order if none is provided
+    if (!orderId) {
+      const unpaidOrder = await prisma.order.findFirst({
+        where: { isPaid: false },
+        select: { id: true },
+      });
+
+      if (!unpaidOrder) {
+        throw new Error("No unpaid orders found.");
+      }
+
+      orderId = unpaidOrder.id;
+    }
+
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
     });
 
     if (!order) throw new Error("Order not found");
-    if (!order.isPaid) throw new Error("Order is not paid");
 
-    await prisma.order.update({
-      where: { id: orderId },
-      data: {
-        isDelivered: true,
-        deliveredAt: new Date(),
-      },
-    });
+    // First update: mark as paid
+    if (!order.isPaid) {
+      await prisma.order.update({
+        where: { id: orderId },
+        data: {
+          isPaid: true,
+          paidAt: new Date(),
+        },
+      });
+    }
+
+    // Second update: mark as delivered
+    if (!order.isDelivered) {
+      await prisma.order.update({
+        where: { id: orderId },
+        data: {
+          isDelivered: true,
+          deliveredAt: new Date(),
+        },
+      });
+    }
 
     revalidatePath(`/order/${orderId}`);
 
     return {
       success: true,
-      message: "Order has been marked delivered",
+      message: "Order has been marked as paid and delivered",
     };
+
   } catch (error) {
-    return { success: false, message: formatError(error) };
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "An error occurred",
+    };
   }
 }
+
+
 // Get all the users
 export async function getAllUsers({
   limit = PAGE_SIZE,

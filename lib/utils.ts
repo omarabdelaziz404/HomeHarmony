@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import qs from "query-string";
+import { randomUUID } from "crypto"; // Node.js built-in, safe for server
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -76,10 +77,15 @@ const NUMBER_FORMATTER = new Intl.NumberFormat("en-US");
 export function formatNumber(number: number) {
   return NUMBER_FORMATTER.format(number);
 }
-// Shorten UUID
-export function formatId(id: string) {
+// Shorten UUID or generate incremental order number
+
+export function formatId(id: string | undefined | null) {
+  if (!id || typeof id !== "string" || id.length < 6) {
+    return getRandomId(5);
+  }
   return `..${id.substring(id.length - 6)}`;
 }
+
 // Format date and times
 export const formatDateTime = (dateString: Date) => {
   const dateTimeOptions: Intl.DateTimeFormatOptions = {
@@ -143,4 +149,16 @@ export function formUrlQuery({
       skipNull: true,
     }
   );
+}
+
+// Generate a random ID
+export function getRandomId(length = 8) {
+  // Use crypto if available (Node.js 14.17+ and modern browsers)
+  if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+    const array = new Uint8Array(length);
+    crypto.getRandomValues(array);
+    return Array.from(array, (b) => b.toString(16).padStart(2, "0")).join("").slice(0, length);
+  }
+  // Fallback for environments without crypto
+  return Math.random().toString(16).slice(2, 2 + length);
 }

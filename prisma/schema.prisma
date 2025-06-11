@@ -29,8 +29,9 @@ model Product {
 
 enum UserRole {
   user
+  seller
+  designer 
   admin
-  designer
 }
 
 model User {

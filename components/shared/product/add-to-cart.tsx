@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { Plus, Minus, Loader } from 'lucide-react';
+import { Mail, Plus, Minus, Loader } from 'lucide-react';
 import { Cart, CartItem } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from '@/components/ui/toast';
@@ -60,6 +60,14 @@ const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
   const existItem =
     cart && cart.items.find((x) => x.productId === item.productId);
 
+  const handleClick = () => {
+    if (item.category === 'Designer Portfolio' || item.category === 'Design Your Home') {
+      window.location.href = `mailto:${item.category}?subject=Inquiry about ${item.name}&body=I am interested in your design: ${item.name}`;
+    } else {
+      handleAddToCart();
+    }
+  };
+
   return existItem ? (
     <div>
       <Button type='button' variant='outline' onClick={handleRemoveFromCart}>
@@ -79,13 +87,16 @@ const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
       </Button>
     </div>
   ) : (
-    <Button className='w-full' type='button' onClick={handleAddToCart}>
+    <Button className='w-full' type='button' onClick={handleClick}>
       {isPending ? (
         <Loader className='w-4 h-4 animate-spin' />
+      ) : item.category === 'Designer Portfolio' || item.category === 'Design Your Home' ? (
+        <Mail className='w-4 h-4' />
       ) : (
         <Plus className='w-4 h-4' />
       )}{' '}
-      Add To Cart
+      {item.category === 'Designer Portfolio' || item.category === 'Design Your Home' ? 
+        'Contact Me' : 'Add To Cart'}
     </Button>
   );
 };
