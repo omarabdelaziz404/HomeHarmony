@@ -18,22 +18,63 @@ app.add_middleware(
 )
 
 # === Reuse your model training code ===
-styles = ['Modern', 'Classic', 'Bohemian', 'Industrial', 'Minimalist']
+styles = ['Modern', 'Classic', 'Bohemian', 'Minimalist']
 budgets = ['Low', 'Medium', 'High']
 sizes = ['Small', 'Medium', 'Large']
-designers = ['D1', 'D2', 'D3', 'D4']
+designers = ['John', 'Ethan', 'Steve', 'Valeriy']
+
+# Designer specialties for clarity
+specialties = {
+    'Steve': 'Modern',
+    'John': 'Classic',
+    'Ethan': 'Bohemian',
+    'Valeriy': 'Minimalist'
+}
+
+# Designer profiles
+designer_profiles = {
+    'Steve': {
+        'styles': ['Modern', 'Minimalist'],
+        'budgets': ['High', 'Medium'],
+        'sizes': ['Medium', 'Large']
+    },
+    'John': {
+        'styles': ['Classic', 'Modern'],
+        'budgets': ['Low', 'Medium'],
+        'sizes': ['Small', 'Medium']
+    },
+    'Ethan': {
+        'styles': ['Bohemian', 'Classic'],
+        'budgets': ['Low', 'Medium'],
+        'sizes': ['Large', 'Medium']
+    },
+    'Valeriy': {
+        'styles': ['Minimalist', 'Modern'],
+        'budgets': ['Medium', 'High'],
+        'sizes': ['Small', 'Medium', 'Large']
+    }
+}
 
 def match_designer(style, budget, size):
-    if style == 'Modern' and budget == 'High':
-        return 'D1'
-    elif style in ['Classic', 'Minimalist'] and budget in ['Medium', 'High']:
-        return 'D2'
-    elif style == 'Bohemian' or size == 'Large':
-        return 'D3'
-    elif budget == 'Low' and size == 'Small':
-        return 'D4'
-    else:
-        return random.choice(designers)
+    best_matches = []
+    for designer, profile in designer_profiles.items():
+        score = 0
+        # Style match
+        if style in profile['styles']:
+            score += 2
+        # Budget match
+        if budget in profile['budgets']:
+            score += 2
+        # Size match
+        if size in profile['sizes']:
+            score += 2
+        best_matches.append((designer, score))
+    # Sort designers by score descending
+    best_matches.sort(key=lambda x: x[1], reverse=True)
+    top_score = best_matches[0][1]
+    top_designers = [d for d, s in best_matches if s == top_score]
+    return random.choice(top_designers) if top_designers else random.choice(list(designer_profiles.keys()))
+
 
 # Training Data
 n_samples = 500
