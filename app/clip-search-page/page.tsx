@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Search, Upload } from "lucide-react";
+import Link from 'next/link';
 
 export default function Home() {
   const [image, setImage] = useState<File | null>(null);
@@ -47,6 +48,15 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getProductLink = (path: string) => {
+    // Extract product name from file path
+    const fileName = path.split('\\').pop()?.split('/').pop() || '';
+    const productName = fileName.split('.')[0] // Remove file extension
+      .replace(/[0-9]+$/, '') // Remove trailing numbers
+      .replace(/-+$/, ''); // Remove any trailing hyphens left after number removal
+    return `/product/${encodeURIComponent(productName.toLowerCase())}`;
   };
 
   return (
@@ -115,15 +125,22 @@ export default function Home() {
             )}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               {results.map((path, idx) => (
-                <div key={idx} className="aspect-square relative bg-muted rounded-lg overflow-hidden">
+                <Link
+                  key={idx}
+                  href={getProductLink(path)}
+                  className="aspect-square relative bg-muted rounded-lg overflow-hidden group"
+                >
                   <Image
                     src={`http://localhost:8000/${path}`}
                     alt={`Result ${idx + 1}`}
-                    className="object-cover hover:object-contain transition-all duration-300"
+                    className="object-cover group-hover:object-contain transition-all duration-300"
                     fill
                     sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw"
                   />
-                </div>
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="text-white font-medium">View Product</span>
+                  </div>
+                </Link>
               ))}
             </div>
           </div>
