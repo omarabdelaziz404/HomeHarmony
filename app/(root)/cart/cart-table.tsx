@@ -92,7 +92,11 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                         type='button'
                         onClick={() =>
                           startTransition(async () => {
-                            const res = await addItemToCart(item);
+                            const res = await addItemToCart({
+                              ...item,
+                              // @ts-expect-error: category should exist on item
+                              category: item.category,
+                            });
 
                             if (!res.success) {
                               toast({

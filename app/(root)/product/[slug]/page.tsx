@@ -62,26 +62,26 @@ const ProductDtailsPage = async (props: {
                 </div>
                 <div className="mb-2 flex justify-between">
                   <div>Status</div>
-                  {product.stock > 0 ? (
+                  {(product.stock ?? 0) > 0 ? (
                     <Badge variant="outline">In Stock</Badge>
                   ) : (
                     <Badge variant="destructive">Out Of Stock</Badge>
                   )}
                 </div>
-                {product.stock > 0 && (
+                {(product.stock ?? 0) > 0 && (
                   <div className="flex-center">
-                   <AddToCart
-                   cart={cart}
-                   item={{
-                    productId: product.item_id,
-                    name: product.name,
-                    slug: product.slug,
-                    price: product.price,
-                    qty: 1,
-                    image: product.images![0],
-                    category: product.category,
-                
-                   }} />
+                    <AddToCart
+                      cart={cart}
+                      item={{
+                        productId: product.item_id,
+                        name: product.name,
+                        slug: product.slug,
+                        price: product.price,
+                        qty: 1,
+                        image: product.images![0],
+                        category: product.category,
+                      }}
+                    />
                   </div>
                 )}
               </CardContent>

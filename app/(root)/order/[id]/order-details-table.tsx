@@ -22,8 +22,6 @@ import {
   usePayPalScriptReducer,
 } from '@paypal/react-paypal-js';
 import {
-  createPayPalOrder,
-  approvePayPalOrder,
   updateOrderToPaidCOD,
   markOrderPaidAndDelivered
 } from '@/lib/actions/order.actions';
@@ -56,7 +54,7 @@ const OrderDetailsTable = ({
     deliveredAt,
   } = order;
 
-  const { toast } = useToast();
+
 
   const PrintLoadingState = () => {
     const [{ isPending, isRejected }] = usePayPalScriptReducer();
@@ -68,28 +66,6 @@ const OrderDetailsTable = ({
       status = 'Error Loading PayPal';
     }
     return status;
-  };
-
-  const handleCreatePayPalOrder = async () => {
-    const res = await createPayPalOrder(order.item_id);
-
-    if (!res.success) {
-      toast({
-        variant: 'destructive',
-        description: res.message,
-      });
-    }
-
-    return res.data;
-  };
-
-  const handleApprovePayPalOrder = async (data: { orderID: string }) => {
-    const res = await approvePayPalOrder(order.item_id, data);
-
-    toast({
-      variant: res.success ? 'default' : 'destructive',
-      description: res.message,
-    });
   };
 
   // Button to mark order as paid
@@ -242,8 +218,6 @@ const OrderDetailsTable = ({
                   <PayPalScriptProvider options={{ clientId: paypalClientId }}>
                     <PrintLoadingState />
                     <PayPalButtons
-                      createOrder={handleCreatePayPalOrder}
-                      onApprove={handleApprovePayPalOrder}
                     />
                   </PayPalScriptProvider>
                 </div>
