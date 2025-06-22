@@ -72,14 +72,13 @@ export async function getAllProducts({
         }
       : {};
   const data = await prisma.product.findMany({
-    orderBy: { CreatedAt: "desc" },
     where:{
       ...queryFilter,
       ...categoryFilter,
       ...priceFilter,
       ...ratingFilter
     },
-      orderBy:
+    orderBy:
       sort === 'lowest'
         ? { price: 'asc' }
         : sort === 'highest'

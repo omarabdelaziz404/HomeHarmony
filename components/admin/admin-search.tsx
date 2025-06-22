@@ -6,17 +6,17 @@ import { Input } from '../ui/input';
 
 const AdminSearch = () => {
   const pathname = usePathname();
-  const formActionUrl = pathname.includes('/admin/orders')
+  const formActionUrl = pathname?.includes('/admin/orders')
     ? '/admin/orders'
-    : pathname.includes('/admin/users')
+    : pathname?.includes('/admin/users')
       ? '/admin/users'
       : '/admin/products';
 
   const searchParams = useSearchParams();
-  const [queryValue, setQueryValue] = useState(searchParams.get('query') || '');
+  const [queryValue, setQueryValue] = useState(searchParams?.get('query') || '');
 
   useEffect(() => {
-    setQueryValue(searchParams.get('query') || '');
+    setQueryValue(searchParams?.get('query') || '');
   }, [searchParams]);
 
   return (

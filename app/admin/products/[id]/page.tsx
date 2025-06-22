@@ -22,7 +22,17 @@ const AdminProductUpdatePage = async (props: {
     <div className='space-y-8 max-w-5xl mx-auto'>
       <h1 className='h2-bold'>Update Product</h1>
 
-      <ProductForm type='Update' product={product} productId={product.item_id} />
+      <ProductForm
+        type='Update'
+        product={{
+          ...product,
+          brand: product.brand ?? undefined,
+          stock: product.stock ?? undefined,
+          isFeatured: product.isFeatured ?? undefined,
+          banner: product.banner ?? undefined,
+        }}
+        productId={product.item_id}
+      />
     </div>
   );
 };

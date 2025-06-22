@@ -52,9 +52,9 @@ export async function addItemToCart(data: CartItem) {
       // Create new cart object
       const newCart = insertCartSchema.parse({
         userId: userId,
-        items: [item],
+        items: [{ ...item, category: product.category }],
         sessionCartId: sessionCartId,
-        ...calcPrice([item]),
+        ...calcPrice([{ ...item, category: product.category }]),
       });
 
       // Add to database
@@ -77,7 +77,7 @@ export async function addItemToCart(data: CartItem) {
 
       if (existItem) {
         // Check stock
-        if (product.stock < existItem.qty + 1) {
+        if ((product.stock ?? 0) < existItem.qty + 1) {
           throw new Error('Not enough stock');
         }
 
@@ -88,7 +88,7 @@ export async function addItemToCart(data: CartItem) {
       } else {
         // If item does not exist in cart
         // Check stock
-        if (product.stock < 1) throw new Error('Not enough stock');
+        if ((product.stock ?? 0) < 1) throw new Error('Not enough stock');
 
         // Add item to the cart.items with category from product
         cart.items.push({ ...item, category: product.category });

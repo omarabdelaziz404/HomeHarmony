@@ -325,12 +325,12 @@ const ProductForm = ({
                           onClientUploadComplete={(res) =>
                             form.setValue("images", [...images, res[0].url])
                           }
-                          onUploadError={(error: Error) =>
+                          onUploadError={(error: Error) => {
                             toast({
                               variant: "destructive",
                               description: `ERROR! ${error.message}`,
-                            })
-                          }
+                            });
+                          }}
                         />
                       </FormControl>
                     </div>
@@ -377,12 +377,12 @@ const ProductForm = ({
                     onClientUploadComplete={(res) =>
                       form.setValue("banner", res[0].url)
                     }
-                    onUploadError={(error: Error) =>
+                    onUploadError={(error: Error) => {
                       toast({
                         variant: "destructive",
                         description: `ERROR! ${error.message}`,
-                      })
-                    }
+                      });
+                    }}
                   />
                 )}
               </CardContent>

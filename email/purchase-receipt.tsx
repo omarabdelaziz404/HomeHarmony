@@ -57,6 +57,9 @@ PurchaseReceiptEmail.PreviewProps = {
       pricePaid: '100',
       email_address: 'test@test.com',
     },
+    Home: '', // Add appropriate mock value
+    designer: '', // Add appropriate mock value
+    seller: '', // Add appropriate mock value
   },
 } satisfies OrderInformationProps;
 

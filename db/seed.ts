@@ -11,7 +11,12 @@ async function main() {
 
   await prisma.product.createMany({ data: ikeaProducts.products });
 
-  await prisma.user.createMany({ data: ikeaProducts.users });
+  await prisma.user.createMany({ 
+    data: ikeaProducts.users.map(user => ({
+      ...user,
+      role: user.role as any // Replace 'any' with 'UserRole' if you have imported the enum
+    }))
+  });
 
   console.log("Database seeded succesfully!");
 }
