@@ -1,13 +1,8 @@
-import { neonConfig, Pool } from "@neondatabase/serverless";
-import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaClient } from "@prisma/client";
-import ws from "ws";
+import { PrismaNeon } from "@prisma/adapter-neon";
 
-neonConfig.webSocketConstructor = ws;
-const connectionString = `${process.env.DATABASE_URL}`;
-
-// Create a Pool instance and pass it to PrismaNeon
-const pool = new Pool({ connectionString });
+import { Pool } from "@neondatabase/serverless";
+const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
 const adapter = new PrismaNeon(pool);
 
 export const prisma = new PrismaClient({ adapter }).$extends({
