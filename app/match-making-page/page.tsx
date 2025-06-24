@@ -61,7 +61,9 @@ export default function DesignerMatch() {
       budget, 
       size 
     });
-    const res = await fetch(`http://localhost:8001/recommend-designer?${params}`);
+    const apiUrl = process.env.NEXT_PUBLIC_DESIGNER_API_URL;
+
+    const res = await fetch(`${apiUrl}/recommend-designer?${params}`);
     const data = await res.json();
     setResult(data.recommended_designer || data.error || 'No result');
   };

@@ -11,7 +11,7 @@ app = FastAPI()
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace with ["http://localhost:3000"] for security
+    allow_origins=["https://homeharmony-omarabdelaziz404s-projects.vercel.app"],  # Replace with ["http://localhost:3000"] for security
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
