@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 
-import { Pool } from "@neondatabase/serverless";
-const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
-const adapter = new PrismaNeon(pool);
+// Pass the connection string directly to PrismaNeon — no need for Pool
+const adapter = new PrismaNeon({
+  connectionString: process.env.DATABASE_URL!,
+});
 
 export const prisma = new PrismaClient({ adapter }).$extends({
   result: {
@@ -48,40 +49,35 @@ export const prisma = new PrismaClient({ adapter }).$extends({
     order: {
       itemsPrice: {
         needs: { itemsPrice: true },
-        compute(cart) {
-          return cart.itemsPrice.toString();
+        compute(order) {
+          return order.itemsPrice.toString();
         },
       },
       shippingPrice: {
         needs: { shippingPrice: true },
-        compute(cart) {
-          return cart.shippingPrice.toString();
+        compute(order) {
+          return order.shippingPrice.toString();
         },
       },
       taxPrice: {
         needs: { taxPrice: true },
-        compute(cart) {
-          return cart.taxPrice.toString();
+        compute(order) {
+          return order.taxPrice.toString();
         },
       },
       totalPrice: {
         needs: { totalPrice: true },
-        compute(cart) {
-          return cart.totalPrice.toString();
+        compute(order) {
+          return order.totalPrice.toString();
         },
       },
     },
     orderItem: {
       price: {
-        compute(cart) {
-          return cart.price.toString();
+        compute(orderItem) {
+          return orderItem.price.toString();
         },
       },
     },
   },
 });
-
-
-
-
-
