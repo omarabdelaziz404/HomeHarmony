@@ -30,7 +30,7 @@ const Header = () => {
           <Search />
         </div>
         <div className="flex items-center space-x-2">
-          <ImageSearch />
+          {/* <ImageSearch /> */}
           <MatchMakingIcon />
           <Menu />
         </div>

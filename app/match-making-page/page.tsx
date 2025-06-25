@@ -62,8 +62,9 @@ export default function DesignerMatch() {
       size 
     });
 
-    const res = await fetch(`https://designerapi-production.up.railway.app/recommend-designer?${params}`);
-    
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DESIGNER_API_URL}/recommend-designer?${params}`);
+
+
     const data = await res.json();
     setResult(data.recommended_designer || data.error || 'No result');
   };
