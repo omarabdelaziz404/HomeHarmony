@@ -49,6 +49,12 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
 
 ---
 
+## 🌐 Live Demo
+
+Access the live version here: [https://homeharmony-omarabdelaziz404s-projects.vercel.app).
+
+---
+
 ## 🔑 Test Accounts
 
 **User Account:**  
