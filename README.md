@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## 🌟 Overview
 
-First, run the development server:
+**Home Harmony** is a full-stack web application that offers an innovative platform for homeowners, architects, and furniture sellers. It combines a furniture marketplace, and design consultation services to simplify the process of creating your dream space.
+
+---
+
+## 🎨 Features
+
+✅ Responsive and modern UI  
+✅ Furniture Marketplace (similar to Noon)    
+✅ Designer Portfolios    
+✅ Role-Based Access (Homeowners, Designers, Sellers, Admins)  
+✅ Secure Login & Authentication  
+
+---
+
+## 👥 User Roles
+
+- **Homeowners:** Browse furniture, consult with experts  
+- **Designer:** Showcase portfolios, offer design services  
+- **Sellers:** List and manage furniture products  
+- **Admins:** Manage users, content, and platform integrity  
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/home-harmony.git
+cd home-harmony
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app will be available at [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔑 Test Accounts
 
-## Learn More
+**User Account:**  
+Email: `user@example.com`  
+Password: `123456`  
 
-To learn more about Next.js, take a look at the following resources:
+**Seller Account:**  
+Email: `seller@example.com`  
+Password: `123456`  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Designer Account:**  
+Email: `designer@example.com`  
+Password: `123456`  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Admin Account:**  
+Email: `admin@example.com`  
+Password: `123456`  
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
